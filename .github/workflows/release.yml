@@ -77,7 +77,7 @@ jobs:
           git config --local user.name "GitHub Action"
           git add manifest.json
           git commit -m "chore: release ${{ steps.get_version.outputs.VERSION }} [skip ci]"
-          git push origin main
+          git push origin HEAD:main
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
