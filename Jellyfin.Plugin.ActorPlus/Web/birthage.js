@@ -807,13 +807,6 @@ function resetContextForRoute() {
         for (const id of ids) {
           const rec = byId[id];
 
-          // Negative caching: ensure every id in the batch is marked as 'seen' in the maps, even if the value is null.
-          if (!ageCache.has(id)) ageCache.set(id, null);
-          if (!birthDateCache.has(id)) birthDateCache.set(id, null);
-          if (!birthCountryIso2Cache.has(id)) birthCountryIso2Cache.set(id, null);
-          if (!birthPlaceCache.has(id)) birthPlaceCache.set(id, null);
-          if (!deceasedCache.has(id)) deceasedCache.set(id, null);
-
           const birth = rec ? (rec.BirthDate ?? rec.birthDate) : null;
           if (birth) birthDateCache.set(id, String(birth).trim());
 
@@ -899,6 +892,17 @@ function resetContextForRoute() {
           } catch {
             // ignore
           }
+        }
+
+        // FINAL PASS: Negative caching.
+        // For every ID we attempted to fetch, if we still have absolutely no data after all attempts,
+        // set the cache entries to null to prevent redundant network requests in future scans.
+        for (const id of ids) {
+          if (!ageCache.has(id)) ageCache.set(id, null);
+          if (!birthDateCache.has(id)) birthDateCache.set(id, null);
+          if (!birthCountryIso2Cache.has(id)) birthCountryIso2Cache.set(id, null);
+          if (!birthPlaceCache.has(id)) birthPlaceCache.set(id, null);
+          if (!deceasedCache.has(id)) deceasedCache.set(id, null);
         }
       } catch {
         // transient error - retry later (no negative caching)
