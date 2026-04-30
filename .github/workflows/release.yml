@@ -37,6 +37,25 @@ jobs:
           echo "VERSION=$NORMALIZED_VER" >> $GITHUB_OUTPUT
           echo "TAG=$TAG_NAME" >> $GITHUB_OUTPUT
 
+      - name: Generate Changelog and Update Metadata
+        run: |
+          # Get the previous tag or the first commit if no previous tag exists
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0 ${{ github.ref }}^ 2>/dev/null || git rev-list --max-parents=0 HEAD)
+          echo "Generating changelog from $PREVIOUS_TAG to ${{ github.ref }}"
+          
+          # Generate changelog from commit history
+          CHANGELOG=$(git log $PREVIOUS_TAG..${{ github.ref }} --oneline --pretty=format:"- [%h] %s")
+          
+          # Replace placeholder in jprm.yaml with multi-line changelog
+          # Remove the existing changelog line
+          sed -i '/changelog:/d' Jellyfin.Plugin.ActorPlus/jprm.yaml
+          # Append the multi-line block
+          echo "changelog: |" >> Jellyfin.Plugin.ActorPlus/jprm.yaml
+          echo "$CHANGELOG" | sed 's/^/  /' >> Jellyfin.Plugin.ActorPlus/jprm.yaml
+          
+          echo "Updated jprm.yaml with changelog:"
+          cat Jellyfin.Plugin.ActorPlus/jprm.yaml
+
       - name: Build and Package
         run: |
           # Use jprm to build the plugin. 
