@@ -6,7 +6,16 @@
         "overview": "The plugin adds additional information to the actor's portrait and, when hovering over it with the cursor, the filmography.",
         "owner": "adripo",
         "category": "General",
+        "imageUrl": "https://raw.githubusercontent.com/adripo/Jellyfin.Plugin.ActorPlus/main/images/logo.jpg",
         "versions": [
+            {
+                "version": "1.0.0.3",
+                "changelog": "- [dfcc33e] Merge pull request #4 from adripo/cache-prune\n- [eca67dd] fix: generate and update changelog in jprm.yaml\n- [235f804] chore: release 1.0.0.2 [skip ci]\n- [35d8903] feat: add cache prune logic\n",
+                "targetAbi": "10.10.0.0",
+                "sourceUrl": "https://github.com/adripo/Jellyfin.Plugin.ActorPlus/releases/download/v1.0.0.3/ActorPlus_1.0.0.3.zip",
+                "checksum": "20a6d5dd1879a8379f6ba83f833e58cf",
+                "timestamp": "2026-04-30T21:57:44Z"
+            },
             {
                 "version": "1.0.0.2",
                 "changelog": "No changelog provided",
@@ -15,7 +24,6 @@
                 "checksum": "44a4fb1e0117b4a5fb13c841a66c6f07",
                 "timestamp": "2026-04-30T21:46:55Z"
             }
-        ],
-        "imageUrl": "https://raw.githubusercontent.com/adripo/Jellyfin.Plugin.ActorPlus/main/images/logo.jpg"
+        ]
     }
 ]
