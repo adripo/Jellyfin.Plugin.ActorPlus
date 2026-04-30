@@ -39,8 +39,8 @@ jobs:
 
       - name: Build and Package
         run: |
-          # Use jprm to build the plugin. It will find jprm.yaml and the csproj.
-          jprm plugin build . --version ${{ steps.get_version.outputs.VERSION }} --output ./artifacts
+          # Use jprm to build the plugin. 
+          jprm plugin build Jellyfin.Plugin.ActorPlus --version ${{ steps.get_version.outputs.VERSION }} --output ./artifacts
 
       - name: Update Repository Manifest
         run: |
