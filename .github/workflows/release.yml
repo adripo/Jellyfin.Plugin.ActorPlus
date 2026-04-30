@@ -37,36 +37,30 @@ jobs:
           echo "VERSION=$NORMALIZED_VER" >> $GITHUB_OUTPUT
           echo "TAG=$TAG_NAME" >> $GITHUB_OUTPUT
 
-      - name: Build
-        run: dotnet build Jellyfin.Plugin.ActorPlus/Jellyfin.Plugin.ActorPlus.csproj -c Release /p:Version=${{ steps.get_version.outputs.VERSION }}
-
-      - name: Package
+      - name: Build and Package
         run: |
-          mkdir -p ./publish
-          cp Jellyfin.Plugin.ActorPlus/bin/Release/net9.0/Jellyfin.Plugin.ActorPlus.dll ./publish/
-          cd publish
-          zip -r ../ActorPlus_${{ steps.get_version.outputs.VERSION }}.zip .
-          cd ..
+          # Use jprm to build the plugin. It will find jprm.yaml and the csproj.
+          jprm plugin build . --version ${{ steps.get_version.outputs.VERSION }} --output ./artifacts
 
       - name: Update Repository Manifest
         run: |
           # JPRM repo add updates the manifest.json using metadata from jprm.yaml and the zip artifact
-          # We use --plugin-url to ensure the manifest points to the GitHub Release download
+          # We use '.' as the repository path so it finds manifest.json in the current directory.
           REPO_URL="https://github.com/${{ github.repository }}/releases/download/${{ steps.get_version.outputs.TAG }}/ActorPlus_${{ steps.get_version.outputs.VERSION }}.zip"
-          jprm repo add . ActorPlus_${{ steps.get_version.outputs.VERSION }}.zip --plugin-url="$REPO_URL"
+          jprm repo add . artifacts/*.zip -u "$REPO_URL" -U "$REPO_URL"
 
       - name: Commit Manifest
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add manifest.json
-          git commit -m "chore: release ${{ steps.get_version.outputs.VERSION }} [skip ci]"
+          git commit -m "chore: release ${{ steps.get_version.outputs.VERSION }} [skip ci]" || echo "No changes to commit"
           git push origin HEAD:main
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          files: ActorPlus_${{ steps.get_version.outputs.VERSION }}.zip
+          files: artifacts/*.zip
           tag_name: ${{ steps.get_version.outputs.TAG }}
           name: Release ${{ steps.get_version.outputs.VERSION }}
           draft: false

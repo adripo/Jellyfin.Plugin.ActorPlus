@@ -6,3 +6,6 @@ overview: "The plugin adds additional information to the actor's portrait and, w
 owner: "adripo"
 sourceUrl: "https://github.com/adripo/Jellyfin.Plugin.ActorPlus"
 imageUrl: "https://raw.githubusercontent.com/adripo/Jellyfin.Plugin.ActorPlus/main/images/logo.jpg"
+targetAbi: "10.10.0.0"
+artifacts:
+  - "Jellyfin.Plugin.ActorPlus.dll"
