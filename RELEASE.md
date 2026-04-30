@@ -20,10 +20,13 @@ Once the tag is pushed, the GitHub Action (`.github/workflows/release.yml`) will
 
 1.  **Build** the plugin DLL with the correct version.
 2.  **Package** the DLL into a ZIP file.
-3.  **Calculate** the MD5 checksum.
-4.  **Update `manifest.json`** with the new version, checksum, and download URL.
-5.  **Commit** the updated `manifest.json` back to the `main` branch.
-6.  **Create a GitHub Release** and upload the ZIP asset.
+3.  **Use JPRM** (Jellyfin Plugin Repository Manager) to update the `manifest.json`. JPRM uses the metadata from `jprm.yaml` to ensure the manifest is correctly formatted with checksums and valid download URLs.
+4.  **Commit** the updated `manifest.json` back to the `main` branch.
+5.  **Create a GitHub Release** and upload the ZIP asset.
+
+## Metadata Management
+
+All plugin metadata (Name, GUID, Description, URLs) is managed in `jprm.yaml`. If you need to change the plugin name or other top-level info, update that file instead of editing `manifest.json` manually.
 
 ## Requirements
 
