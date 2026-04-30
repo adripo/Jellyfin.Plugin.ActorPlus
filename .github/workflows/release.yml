@@ -51,9 +51,9 @@ jobs:
       - name: Update Repository Manifest
         run: |
           # JPRM repo add updates the manifest.json using metadata from jprm.yaml and the zip artifact
-          # We use --artifact-url to ensure the manifest points to the GitHub Release download
+          # We use --plugin-url to ensure the manifest points to the GitHub Release download
           REPO_URL="https://github.com/${{ github.repository }}/releases/download/${{ steps.get_version.outputs.TAG }}/ActorPlus_${{ steps.get_version.outputs.VERSION }}.zip"
-          jprm repo add manifest.json ActorPlus_${{ steps.get_version.outputs.VERSION }}.zip --artifact-url="$REPO_URL"
+          jprm repo add manifest.json ActorPlus_${{ steps.get_version.outputs.VERSION }}.zip --plugin-url="$REPO_URL"
 
       - name: Commit Manifest
         run: |
