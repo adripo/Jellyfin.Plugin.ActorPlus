@@ -18,5 +18,6 @@ public class PluginServiceRegistrator : IPluginServiceRegistrator
         serviceCollection.AddSingleton<TmdbPersonClient>();
         serviceCollection.AddSingleton<PersonAgeService>();
         serviceCollection.AddHostedService<IndexHtmlInjectorHostedService>();
+        serviceCollection.AddHostedService<FileTransformationRegistrationHostedService>();
     }
 }
