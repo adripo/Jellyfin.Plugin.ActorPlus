@@ -9,6 +9,14 @@
         "imageUrl": "https://raw.githubusercontent.com/adripo/Jellyfin.Plugin.ActorPlus/main/images/logo.jpg",
         "versions": [
             {
+                "version": "2.0.0.0",
+                "changelog": "- [3b83556] refactor: remove unused service provider and transformation logic\n- [abde077] fix: missing V12 cleanup\n- [bed45dc] fix: update jprm versions\n- [c7d7d7e] fix: update dotnet version\n- [0941ae0] Merge pull request #5 from adripo/v12-comp\n- [8f5911f] chore: sync for Support Jellyfin 12\n- [ee23ef8] chore: release 1.0.0.3 [skip ci]\n",
+                "targetAbi": "12.0.0",
+                "sourceUrl": "https://github.com/adripo/Jellyfin.Plugin.ActorPlus/releases/download/v2.0.0.0/ActorPlus_2.0.0.0.zip",
+                "checksum": "86d637cb0e58640b9bb6b856efdb02c4",
+                "timestamp": "2026-09-30T20:55:26Z"
+            },
+            {
                 "version": "1.0.0.3",
                 "changelog": "- [dfcc33e] Merge pull request #4 from adripo/cache-prune\n- [eca67dd] fix: generate and update changelog in jprm.yaml\n- [235f804] chore: release 1.0.0.2 [skip ci]\n- [35d8903] feat: add cache prune logic\n",
                 "targetAbi": "10.10.0.0",
