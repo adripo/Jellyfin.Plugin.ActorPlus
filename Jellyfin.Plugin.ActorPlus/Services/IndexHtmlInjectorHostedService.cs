@@ -3,7 +3,6 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Jellyfin.Plugin.ActorPlus.Web;
 using MediaBrowser.Common.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -21,13 +20,11 @@ public sealed class IndexHtmlInjectorHostedService : IHostedService
     private const string EndMarker = "<!-- ActorPlus:END -->";
 
     private readonly IApplicationPaths _paths;
-    private readonly IServiceProvider _serviceProvider;
     private readonly ILogger<IndexHtmlInjectorHostedService> _logger;
 
-    public IndexHtmlInjectorHostedService(IApplicationPaths paths, IServiceProvider serviceProvider, ILogger<IndexHtmlInjectorHostedService> logger)
+    public IndexHtmlInjectorHostedService(IApplicationPaths paths, ILogger<IndexHtmlInjectorHostedService> logger)
     {
         _paths = paths;
-        _serviceProvider = serviceProvider;
         _logger = logger;
     }
 
@@ -37,14 +34,6 @@ public sealed class IndexHtmlInjectorHostedService : IHostedService
         {
             var cfg = Plugin.Instance?.Configuration;
             if (cfg?.InjectWebClientAssets != true)
-            {
-                return Task.CompletedTask;
-            }
-
-            // Preferred: in-memory transformation via jellyfin-plugin-file-transformation.
-            // This avoids writing to /usr/share/jellyfin/web/index.html (fails when running Jellyfin as non-root).
-            var transformationId = Plugin.Instance?.Id ?? Guid.Parse("cd3c40dc-2a2e-4ad7-bc0a-b9be6b6d3a08");
-            if (FileTransformationIntegration.TryRegisterIndexHtmlTransformation(transformationId, _serviceProvider, _logger))
             {
                 return Task.CompletedTask;
             }
@@ -109,16 +98,6 @@ public sealed class IndexHtmlInjectorHostedService : IHostedService
 
     public Task StopAsync(CancellationToken cancellationToken)
     {
-        try
-        {
-            var transformationId = Plugin.Instance?.Id ?? Guid.Parse("cd3c40dc-2a2e-4ad7-bc0a-b9be6b6d3a08");
-            FileTransformationIntegration.TryUnregisterIndexHtmlTransformation(transformationId, _serviceProvider, _logger);
-        }
-        catch
-        {
-            // non-fatal
-        }
-
         return Task.CompletedTask;
     }
 }
